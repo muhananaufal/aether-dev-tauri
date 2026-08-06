@@ -38,6 +38,11 @@ async-trait = "0.1"
 
 tracing = "0.1"
 
+# Compression happens in this process rather than by piping through `gzip` in a
+# shell. That is what lets the database dump paths avoid `bash -c` entirely,
+# which is where the predecessor's injection hole lived.
+flate2 = "1"
+
 # Generates the TypeScript definitions for every IPC DTO, so the frontend types
 # cannot drift away from the Rust ones.
 ts-rs = "10"
@@ -45,6 +50,8 @@ ts-rs = "10"
 [dev-dependencies]
 mockall = "0.13"
 tokio = { version = "1", features = ["rt", "macros", "test-util"] }
+proptest = "1"
+tempfile = "3"
 
 [features]
 default = []

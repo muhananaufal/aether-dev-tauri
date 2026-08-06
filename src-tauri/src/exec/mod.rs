@@ -13,7 +13,19 @@
 //!    predecessor project interpolated a free-text database name straight into
 //!    `bash -c`; that shape is unrepresentable here.
 //!
-//! Implementations live in `native.rs` and `wsl.rs` (Batch 2).
+//! Implementations live in [`native`] and [`wsl`]; both delegate the actual
+//! process work to [`spawn`], so it is written once. [`probe`] picks between
+//! them, and [`validate`] guards anything user-supplied that reaches a command.
+
+pub mod native;
+pub mod probe;
+mod spawn;
+pub mod validate;
+pub mod wsl;
+
+pub use native::NativeRunner;
+pub use probe::{probe, ProbeOptions, Probed, TransportPreference};
+pub use wsl::WslRunner;
 
 use std::path::PathBuf;
 use std::time::Duration;
