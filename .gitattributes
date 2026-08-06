@@ -1,0 +1,31 @@
+# Normalize line endings across Windows / Linux / macOS contributors.
+# Without this, a Windows checkout rewrites shell scripts to CRLF and they
+# fail with "bad interpreter" the moment they run inside WSL or on Linux.
+* text=auto eol=lf
+
+# Files that must keep LF no matter what, because they are executed by a
+# POSIX shell or consumed by tooling that rejects CR.
+*.sh        text eol=lf
+*.bash      text eol=lf
+Dockerfile  text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+justfile    text eol=lf
+Caddyfile   text eol=lf
+
+# Windows-only scripts keep CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary assets — never touch.
+*.png  binary
+*.jpg  binary
+*.ico  binary
+*.icns binary
+*.woff  binary
+*.woff2 binary
+
+# Lockfiles: keep diffs readable but do not let anyone "fix" them by hand.
+Cargo.lock       -diff linguist-generated
+package-lock.json -diff linguist-generated
