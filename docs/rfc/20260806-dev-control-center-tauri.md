@@ -303,20 +303,32 @@ Model ancaman untuk aplikasi desktop lokal berbeda dari layanan web, tetapi tida
 ### Batch 0: Higiene Repositori (Langkah 0 `git-workflow` §3)
 * **DependsOn:** `[]`
 * **Goal:** `.gitignore` ada dan ter-commit SEBELUM berkas lain apa pun. Tidak ada kredensial yang pernah masuk staging.
-- [ ] `[NEW]` `.gitignore` (mencakup `.env`, `.env.*`, `!.env.example`, `target/`, `node_modules/`, `dist/`, `*.log`)
-- [ ] `git init` + `git checkout -b main` + commit `chore: add .gitignore before any other file`
-- [ ] `[NEW]` `LICENSE` (MIT), `[NEW]` `README.md` kerangka
-- [ ] Verifikasi: `git log --stat` menunjukkan `.gitignore` sebagai commit pertama
+- [x] `[NEW]` `.gitignore` (mencakup `.env`, `.env.*`, `!.env.example`, `target/`, `node_modules/`, `dist/`, `*.log`)
+- [x] `git init` + `git checkout -b main` + commit `chore: add .gitignore before any other file`
+- [x] `[NEW]` `LICENSE` (MIT), `[NEW]` `README.md` kerangka
+- [x] `[NEW]` `.gitattributes` — *tambahan di luar rencana:* checkout Windows menulis ulang skrip shell jadi CRLF dan merusaknya di WSL/Linux. Wajib ada sejak awal untuk proyek tiga platform.
+- [x] Verifikasi: `git log --stat` menunjukkan `.gitignore` sebagai commit pertama (`0dbc898`)
 
 ### Batch 1: Contract Locking & Scaffold
 * **DependsOn:** `[Batch 0]`
 * **Goal:** Kunci SELURUH interface sebelum satu baris business logic ditulis (§7 Contract-First).
-- [ ] `[NEW]` scaffold Tauri v2 + React + TS + Tailwind + Vite
-- [ ] `[NEW]` `src-tauri/src/error.rs` — `AppError`, `ExecError`, mapping ke IPC
-- [ ] `[NEW]` `src-tauri/src/exec/mod.rs` — `CommandSpec`, `CommandRunner`, `Transport`, `Capabilities`
-- [ ] `[NEW]` `src-tauri/src/model/` — SELURUH DTO + derive `ts-rs`
-- [ ] `[NEW]` `resources/services.json` + skema + validator
-- [ ] Verifikasi: `cargo check`, `cargo clippy -- -D warnings`, tipe TS ter-generate
+- [x] `[NEW]` scaffold Tauri v2 + React 19 + TS 5.9 + Tailwind 4 + Vite 6
+- [x] `[NEW]` `src-tauri/src/error.rs` — `AppError`, `ExecError`, mapping + redaksi kredensial
+- [x] `[NEW]` `src-tauri/src/exec/mod.rs` — `CommandSpec`, `CommandRunner`, `Transport`, `Capabilities`, `StreamHandle`, `PipeIo`
+- [x] `[NEW]` `src-tauri/src/model/` — DTO service, project, system + derive `ts-rs`
+- [x] `[NEW]` `resources/services.json` (14 entri) + `ServiceRegistry::validate()`
+- [x] Verifikasi: `cargo test` 48 passed · `clippy -D warnings` bersih · `cargo fmt` bersih · `tsc --noEmit` bersih
+
+**Temuan saat eksekusi.** `ts-rs` menghasilkan `frameworkVersion: string | null` padahal serde
+menghilangkan field itu sepenuhnya saat `None`. Kontrak TypeScript berbohong tentang format wire —
+persis kelas bug yang seharusnya dicegah pendekatan generate. Ditambal dengan `#[ts(optional)]`
+pada setiap field ber-`skip_serializing_if`, sehingga TS kini menulis `frameworkVersion?: string`.
+Pelajaran: *generated* tidak sama dengan *benar* — keluarannya wajib diperiksa, bukan diasumsikan.
+
+**Tambahan di luar rencana.** Field `requires` pada `ServiceDefinition`, terpisah dari `companions`.
+Aplikasi lama menyalakan DbGate bersama tiap database tetapi tidak mematikannya — perilaku benar
+yang lahir dari dua cabang kode berbeda, bukan dari niat. Tanpa dibuat eksplisit, refactor
+berikutnya akan "merapikan"-nya menjadi bug yang mencabut GUI PostgreSQL saat MySQL dimatikan.
 
 ### Batch 2: Exec Transport & Environment Probe
 * **DependsOn:** `[Batch 1]`

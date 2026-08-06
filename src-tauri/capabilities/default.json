@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Baseline capability for the main window. Permissions are added one at a time as batches land — never widened preemptively, because every entry here is OS reach granted to whatever the webview happens to be running.",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

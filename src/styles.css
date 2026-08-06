@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/*
+ * The app is a dark-first tool, matching the terminal environments it manages.
+ * `index.html` sets `class="dark"` so this is the default rather than a
+ * media-query guess; a user-facing theme toggle can flip it in Batch 7.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  /* Native-app feel: the window chrome is ours, text selection is not useful. */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Re-enable selection where reading and copying is the point. */
+input,
+textarea,
+[data-selectable] {
+  -webkit-user-select: text;
+  user-select: text;
+}

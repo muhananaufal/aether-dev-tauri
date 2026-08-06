@@ -1,0 +1,32 @@
+{
+  "name": "dev-control-center",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4",
+    "@tauri-apps/cli": "^2",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite": "^6",
+    "vitest": "^3"
+  }
+}
