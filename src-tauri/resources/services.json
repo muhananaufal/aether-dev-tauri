@@ -1,0 +1,141 @@
+{
+  "$comment": "Single source of truth for managed services. Drives the service cards, the local-domain manager and the log source picker. Copy this file into the app config directory to customise it; adding your own service is a config change, not a code change.",
+  "schemaVersion": 1,
+  "services": [
+    {
+      "id": "mysql",
+      "label": "MySQL 9.7 LTS",
+      "container": "mysql-db",
+      "hostPort": 3306,
+      "engine": "my_sql",
+      "panelUrl": "http://db.localhost",
+      "connectionHint": "127.0.0.1:3306 · user root",
+      "requires": ["dbgate"]
+    },
+    {
+      "id": "postgres",
+      "label": "PostgreSQL 18",
+      "container": "postgres-db",
+      "hostPort": 5432,
+      "engine": "postgres",
+      "panelUrl": "http://db.localhost",
+      "connectionHint": "127.0.0.1:5432 · user postgres",
+      "requires": ["dbgate"]
+    },
+    {
+      "id": "mongodb",
+      "label": "MongoDB 8.0",
+      "container": "mongo-db",
+      "hostPort": 27017,
+      "engine": "mongo",
+      "panelUrl": "http://db.localhost",
+      "connectionHint": "127.0.0.1:27017 · auth db admin",
+      "requires": ["dbgate"]
+    },
+    {
+      "id": "redis",
+      "label": "Redis 8.0",
+      "container": "redis-db",
+      "hostPort": 6379,
+      "engine": "redis",
+      "panelUrl": "http://db.localhost",
+      "connectionHint": "127.0.0.1:6379 · password required",
+      "requires": ["dbgate"]
+    },
+    {
+      "id": "elasticsearch",
+      "label": "Elasticsearch 9.4",
+      "container": "elasticsearch-db",
+      "hostPort": 9200,
+      "internalPort": 9200,
+      "engine": "elasticsearch",
+      "panelUrl": "http://elasticvue.localhost",
+      "defaultDomain": "elasticsearch.localhost",
+      "connectionHint": "127.0.0.1:9200 · HTTP REST API",
+      "companions": ["elasticvue"]
+    },
+    {
+      "id": "mailpit",
+      "label": "Mailpit Catcher",
+      "container": "mailpit-app",
+      "hostPort": 8025,
+      "internalPort": 8025,
+      "panelUrl": "http://mailpit.localhost",
+      "defaultDomain": "mailpit.localhost",
+      "connectionHint": "SMTP on 1025 · web UI on 8025"
+    },
+    {
+      "id": "minio",
+      "label": "MinIO S3 Storage",
+      "container": "minio-s3",
+      "hostPort": 9001,
+      "internalPort": 9001,
+      "panelUrl": "http://minio.localhost",
+      "defaultDomain": "minio.localhost",
+      "connectionHint": "S3 API on 9000 · console on 9001"
+    },
+    {
+      "id": "rabbitmq",
+      "label": "RabbitMQ Manager",
+      "container": "rabbitmq-db",
+      "hostPort": 15672,
+      "internalPort": 15672,
+      "panelUrl": "http://rabbitmq.localhost",
+      "defaultDomain": "rabbitmq.localhost",
+      "connectionHint": "AMQP on 5672 · management on 15672"
+    },
+    {
+      "id": "kafka",
+      "label": "Apache Kafka",
+      "container": "kafka-broker",
+      "hostPort": 9092,
+      "panelUrl": "http://kafka.localhost",
+      "connectionHint": "Broker on 9092 · KRaft mode, no ZooKeeper",
+      "companions": ["kafka-ui"]
+    },
+    {
+      "id": "portainer",
+      "label": "Portainer CE",
+      "container": "portainer-ui",
+      "hostPort": 9090,
+      "internalPort": 9000,
+      "panelUrl": "http://portainer.localhost",
+      "defaultDomain": "portainer.localhost",
+      "connectionHint": "Docker management UI"
+    },
+    {
+      "id": "caddy",
+      "label": "Caddy Reverse Proxy",
+      "container": "caddy-proxy",
+      "hostPort": 80,
+      "connectionHint": "Serves every *.localhost alias on port 80"
+    },
+    {
+      "id": "dbgate",
+      "label": "DbGate",
+      "container": "dbgate-ui",
+      "hostPort": 19000,
+      "internalPort": 3000,
+      "defaultDomain": "db.localhost",
+      "card": false
+    },
+    {
+      "id": "elasticvue",
+      "label": "Elasticvue",
+      "container": "elasticvue-ui",
+      "hostPort": 19200,
+      "internalPort": 8080,
+      "defaultDomain": "elasticvue.localhost",
+      "card": false
+    },
+    {
+      "id": "kafka-ui",
+      "label": "Kafka UI",
+      "container": "kafka-ui",
+      "hostPort": 18080,
+      "internalPort": 8080,
+      "defaultDomain": "kafka.localhost",
+      "card": false
+    }
+  ]
+}

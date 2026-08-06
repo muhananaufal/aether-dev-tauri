@@ -1,0 +1,59 @@
+[package]
+name = "dev-control-center"
+version = "0.1.0"
+description = "Desktop control panel for local development environments"
+authors = ["muhananaufal"]
+license = "MIT"
+repository = "https://github.com/muhananaufal/dev-control-center"
+edition = "2021"
+rust-version = "1.82"
+
+[lib]
+# Tauri v2 keeps the app in a library so the same code can back a mobile
+# target later; `main.rs` is a thin shim over `run()`.
+name = "dev_control_center_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+
+# `process` drives every external command; `sync` carries log lines back to the
+# UI over a bounded channel. Nothing here blocks the webview event loop.
+tokio = { version = "1", features = [
+    "rt-multi-thread",
+    "macros",
+    "process",
+    "sync",
+    "time",
+    "io-util",
+] }
+async-trait = "0.1"
+
+tracing = "0.1"
+
+# Generates the TypeScript definitions for every IPC DTO, so the frontend types
+# cannot drift away from the Rust ones.
+ts-rs = "10"
+
+[dev-dependencies]
+mockall = "0.13"
+tokio = { version = "1", features = ["rt", "macros", "test-util"] }
+
+[features]
+default = []
+
+[profile.release]
+# A desktop tool ships as a download; size matters more than the last few
+# percent of runtime speed.
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true
