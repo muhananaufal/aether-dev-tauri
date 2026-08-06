@@ -43,6 +43,18 @@ tracing = "0.1"
 # which is where the predecessor's injection hole lived.
 flate2 = "1"
 
+# Layered configuration: defaults <- detection <- settings.toml <- environment.
+figment = { version = "0.10", features = ["toml", "env"] }
+toml = "0.9"
+
+# Per-OS config, data and log directories. Hardcoding %APPDATA% would put this
+# project straight back into the trap the predecessor was in.
+directories = "6"
+
+# Generating stack credentials on first run, so no install ships with the
+# default passwords the predecessor had baked into 21 call sites.
+rand = "0.9"
+
 # Generates the TypeScript definitions for every IPC DTO, so the frontend types
 # cannot drift away from the Rust ones.
 ts-rs = "10"

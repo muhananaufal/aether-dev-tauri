@@ -12,6 +12,7 @@
 //! [`exec::CommandRunner`], which is why the whole of it can be tested on a
 //! runner with no Docker installed.
 
+pub mod config;
 pub mod error;
 pub mod exec;
 pub mod model;
